@@ -17,10 +17,12 @@ async def purgeAdmin(n, chan, targetOption, mentions):
         if n > 70:
             n = 70
         if targetOption == 'all':
-            await discord.TextChannel.purge(chan, limit = n, check = is_author)
+            await discord.TextChannel.purge(chan, limit = n)
         else:
-            # for targetUser in mentions:
-            return
+            async for m in chan.history(limit = n):
+                for targetUser in mentions:
+                    if is_author(m, m.id):
+                        await m.delete()
     except:
         chan.send("아빠, that doesn't make any sense! <!purgeAdmin target-user #>")
         
@@ -29,7 +31,7 @@ async def purge(n, chan, currPurger):
         n = int(n) + 1
         if n > 7:
             n = 70
-        async for m in chan.history(limit=n):
+        async for m in chan.history(limit = n):
             if is_author(m, currPurger):
                 await m.delete()
     except:
@@ -82,17 +84,16 @@ async def on_message(message):
             if is_admin(message):
                 inputArray = inputContent.split()
                 if len(inputArray) >= 3 and str(inputArray[2]) == 'all':
-                    purgeAdmin(inputArray[1], message.channel, 'all', message.mentions)
-                elif len(inputArray) == 3:
-                    purgeAdmin(inputArray[1], message.channel, 'mention', message.mentions)
+                    await purgeAdmin(inputArray[1], message.channel, 'all', message.mentions)
+                elif len(inputArray) >= 3:
+                    await purgeAdmin(inputArray[1], message.channel, 'mention', message.mentions)
                 else:
-                    message.channel.delete()
-                    message.channel.send("""아빠, use the command correctly!
+                    await message.channel.delete()
+                    await message.channel.send("""아빠, use the command correctly!
                     <!purgeAdmin #lines all>
                     <!purgeAdmin #lines @user1 @user2...>""")
             else:
-                message.channel.send("u mean <!purge #>? only 부모님 can use purgeAdmin!")
-                await message.delete()
+                await message.channel.send("u mean <!purge #>? only 부모님 can use purgeAdmin!")
 
         if inputContent.lower().lstrip().rstrip().startswith('purge '):
             inputArray = inputContent.split()
