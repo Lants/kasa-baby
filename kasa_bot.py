@@ -2,17 +2,14 @@ import discord
 
 client = discord.Client()
 
-channelID = 0
-messageID = 0
 lance = 187028470998499340
-currentPurger = 0
+print("INIT VARS")
 
 def is_admin(m):
     return 'Admin' == m.author.top_role.name or m.author.id == lance
 
-def is_author(m):
-    print('comparing ' + str(m.author.id) + ' to ' + str(currentPurger))
-    return m.author.id == currentPurger
+def is_author(m, currPurger):
+    return m.author.id == currPurger
 
 async def purgeAdmin(n, chan, targetOption, mentions):
     try:
@@ -27,15 +24,16 @@ async def purgeAdmin(n, chan, targetOption, mentions):
     except:
         chan.send("아빠, that doesn't make any sense! <!purgeAdmin target-user #>")
         
-async def purge(n, chan):
-    # try:
+async def purge(n, chan, currPurger):
+    try:
         n = int(n) + 1
         if n > 7:
             n = 70
-        print(currentPurger)
-        await discord.TextChannel.purge(chan, limit = n, check = is_author)
-    # except:
-        # await chan.send("오빠/누나, that's not a number! <!purge #lines>")
+        async for m in chan.history(limit=n):
+            if is_author(m, currPurger):
+                await m.delete()
+    except:
+        await chan.send("오빠/누나, that's not a number! <!purge #lines>")
 
 @client.event
 async def on_ready():
@@ -100,7 +98,7 @@ async def on_message(message):
             inputArray = inputContent.split()
             currentPurger = message.author.id
             print(currentPurger)
-            await purge(inputArray[1], message.channel)
+            await purge(inputArray[1], message.channel, currentPurger)
         
 
-client.run('Njk4MjU3NjQ5MzA4OTI1OTky.XpDOEQ.JZUlYE_fa_C0g9fQGoqN4ls9YEE')
+client.run('Njk4MjU3NjQ5MzA4OTI1OTky.XpIoNA.Rz0ICCsO9sujh-9j7gojef63G-Y')
