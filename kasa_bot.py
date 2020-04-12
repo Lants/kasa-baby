@@ -9,22 +9,27 @@ def is_admin(m):
     return 'Admin' == m.author.top_role.name or m.author.id == lance
 
 def is_author(m, currPurger):
+    print(str(m.author.id) + ' COMPARE ' + str(currPurger))
     return m.author.id == currPurger
 
 async def purgeAdmin(n, chan, targetOption, mentions):
     try:
+        i = 0
         n = int(n) + 1
         if n > 70:
             n = 70
         if targetOption == 'all':
             await discord.TextChannel.purge(chan, limit = n)
         else:
-            async for m in chan.history(limit = n):
+            async for m in chan.history(limit = 150):
                 for targetUser in mentions:
-                    if is_author(m, m.id):
+                    if is_author(m, targetUser.id):
                         await m.delete()
+                        i = i + 1
+                if i >= n:
+                    break
     except:
-        chan.send("아빠, that doesn't make any sense! <!purgeAdmin target-user #>")
+        await chan.send("아빠, that doesn't make any sense! <!purgeAdmin target-user #>")
         
 async def purge(n, chan, currPurger):
     try:
