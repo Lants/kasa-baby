@@ -1,10 +1,14 @@
 import discord
 from discord.ext import commands
 import random
+import json
+
+with open('config.json') as config_file:
+    config = json.load(config_file)
 
 description = '''Discord bot for KASA server. Imitates a baby. googoo gaga, bich'''
 
-bot = commands.Bot(command_prefix = '!', description = description)
+bot = commands.Bot(command_prefix = '!', description = description, case_insensitive = True)
 
 
 
@@ -35,5 +39,21 @@ async def close(ctx):
     
 # Echo back input. Used for testing.
 @bot.command()
-async def ping(ctx):
-    print(ctx.author)
+async def echo(ctx, *, message: str):
+    await ctx.send(message)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+#---------------------------------------IGNORE-------------------------------------------------
+
+
+bot.run(config.token)
