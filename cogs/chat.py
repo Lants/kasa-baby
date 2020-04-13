@@ -23,7 +23,7 @@ class Chat(commands.Cog):
                 i = i + 1
             if i >= n:
                 break
-        await ctx.send("ate " + str(N) + " messages! yummy!", delete_afater = 4)
+        await ctx.send("ate " + str(N) + " messages! yummy!", delete_after = 4)
         
     # Admin version of eat command. Allows targetting users and purging all
     # In: self, context, and a list of args:
