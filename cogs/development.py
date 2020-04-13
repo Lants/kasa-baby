@@ -23,8 +23,8 @@ class Development(commands.Cog):
     # Echo back input. Used for testing.
     @commands.command(name = "echo", description = "Echoes back input. Used for testing.")
     @commands.check_any(commands.has_permissions(administrator = True), commands.is_owner())
-    async def echo(self, ctx, *, message: str):
-        await ctx.send(message)
+    async def echo(self, ctx, *, args: str):
+        await ctx.send(args)
 
 
 

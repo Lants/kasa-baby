@@ -15,7 +15,8 @@ bot = commands.Bot(command_prefix = '!', description = description, case_insensi
 
 #-------------Cogs-------------
 # Cogs are an organizational system
-cogs = ['cogs.development']
+cogs = ['cogs.development',
+        'cogs.chat']
 
 
 # On bot launch
