@@ -11,7 +11,7 @@ class Development(commands.Cog):
     #------------------------------------------COMMANDS------------------------------------------
 
     # Close connection to Discord
-    @commands.command(name = "sleep", description = "Put me to sleep!")
+    @commands.command(name = "sleep", description = "\"Put me to sleep!\"")
     @commands.check_any(commands.has_permissions(administrator = True), commands.is_owner())
     async def sleep(self, ctx):
         if random.random() < .5:
@@ -27,8 +27,42 @@ class Development(commands.Cog):
         await ctx.send(args)
 
 
+    #---------------------------------- COG FEATURES -----------------------------------------------
+    @commands.command(name = 'load', description = "Load specificed Cog.")
+    @commands.check_any(commands.is_owner(), commands.has_permissions(administrator = True))
+    async def _load(self, ctx, *, module: str):
+        """Loads a module."""
+        try:
+            module = 'cogs.' + module
+            self.bot.load_extension(module)
+        except Exception as e:
+            await ctx.send("Could not load extension. Uhhh ask Lance for help lmao")
+        else:
+            await ctx.send("Loaded: " + module)
 
+    @commands.command(name = 'unload', description = "Unload specificed Cog.")
+    @commands.check_any(commands.is_owner(), commands.has_permissions(administrator = True))
+    async def _unload(self, ctx, *, module: str):
+        """Unloads a module."""
+        try:
+            module = 'cogs.' + module
+            self.bot.unload_extension(module)
+        except Exception as e:
+            await ctx.send("Could not unload extension. Uhhh ask Lance for help lmao")
+        else:
+            await ctx.send("Unloaded: " + module)
 
+    @commands.command(name = 'reload', description = "Reload specificed Cog.")
+    @commands.check_any(commands.is_owner(), commands.has_permissions(administrator = True))
+    async def _reload(self, ctx, *, module: str):
+        """Reloads a module."""
+        try:
+            module = 'cogs.' + module
+            self.bot.reload_extension(module)
+        except Exception as e:
+            await ctx.send("Could not reload extension. Uhhh ask Lance for help lmao")
+        else:
+            await ctx.send("Reloaded: " + module)
 
     #-------------------------------------------COMMAND ERROR HANDLING-----------------------------------------------    
     @echo.error

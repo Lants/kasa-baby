@@ -9,7 +9,7 @@ with open('config.JSON') as config_file:
 
 lance = 187028470998499340
 
-description = '''Discord bot for KASA server. Imitates a baby. googoo gaga, bich'''
+description = '''Discord bot for KASA server. Imitates a baby. googoo gaga, bich\nUse !help <command> for instructions!'''
 
 bot = commands.Bot(command_prefix = '!', description = description, case_insensitive = True, owner_id = lance)
 
@@ -17,6 +17,7 @@ bot = commands.Bot(command_prefix = '!', description = description, case_insensi
 # Cogs are an organizational system
 cogs = ['cogs.development',
         'cogs.chat']
+
 
 
 # On bot launch
@@ -27,7 +28,21 @@ async def on_ready():
         bot.load_extension(cog)
     return
     
-    
+#---------------------------------------DEVELOPMENT TOOLS---------------------------------------------
+
+################## THIS HAS BEEN MOVED TO "development.py" ###########################
+
+# @bot.command(hidden = True)
+# @commands.is_owner()
+# async def unload(ctx, *, module: str):
+#     """Unloads a module."""
+#     try:
+#         bot.unload_extension(module)
+#     except Exception as e:
+#         await ctx.send('\N{PISTOL}')
+#         await ctx.send('{}: {}'.format(type(e).__name__, e))
+#     else:
+#         await cts.send('\N{OK HAND SIGN}')    
 
 #---------------------------------------IGNORE-------------------------------------------------
 
