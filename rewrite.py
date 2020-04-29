@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-import random
 import json
 import checks
 
@@ -14,9 +13,11 @@ description = '''Discord bot for KASA server. Imitates a baby. googoo gaga, bich
 bot = commands.Bot(command_prefix = '!', description = description, case_insensitive = True, owner_id = lance)
 
 #-------------Cogs-------------
-# Cogs are an organizational system
+# Cogs are an organizational system. This File is technically the bot,
+# but all of its features are coded with cogs.
 cogs = ['cogs.development',
-        'cogs.chat']
+        'cogs.chat',
+        'cogs.hangman']
 
 
 

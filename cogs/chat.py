@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 
+# Cog for chat features
 
 class Chat(commands.Cog):
     def __init__(self, bot):
@@ -8,6 +9,8 @@ class Chat(commands.Cog):
 
 
     #-------------------------------------COMMANDS-------------------------------------------
+    
+    # !eat <n>
     # Purge user's messages (bulk delete)
     @commands.command(name = "eat", description = "\"Feed me your yummy messages!\"\nDeletes a set number of your messages. Limit 7 per use. Only checks the last 30 messages.\nUsage: !eat <number of messages>")
     async def eat(self, ctx, n):
@@ -32,6 +35,7 @@ class Chat(commands.Cog):
     
     Lance has arbitrarily set 150 messages back as the maximum. If you want this larger, ask him!"""    
         
+    # !eatAdmin <n> <all | @user1 @user2...>
     # Admin version of eat command. Allows targetting users and purging all
     # In: self, context, and a list of args:
         # Args: [<# of lines to delete> <Mention List | 'all'>]

@@ -10,6 +10,7 @@ class Development(commands.Cog):
 
     #------------------------------------------COMMANDS------------------------------------------
 
+    # !sleep
     # Close connection to Discord
     @commands.command(name = "sleep", description = "\"Put me to sleep!\"")
     @commands.check_any(commands.has_permissions(administrator = True), commands.is_owner())
@@ -19,7 +20,8 @@ class Development(commands.Cog):
         else:
             await ctx.channel.send("aw, it's not my bedtime yet " + str(ctx.author.mention) + "! fine.. goodnight!")
         await ctx.bot.logout()
-        
+
+    # !echo <string>   
     # Echo back input. Used for testing.
     @commands.command(name = "echo", description = "Echoes back input. Used for testing.")
     @commands.check_any(commands.has_permissions(administrator = True), commands.is_owner())
@@ -28,6 +30,8 @@ class Development(commands.Cog):
 
 
     #---------------------------------- COG FEATURES -----------------------------------------------
+    # !load <cogname>
+    # Loads an inactive cog
     @commands.command(name = 'load', description = "Load specificed Cog.")
     @commands.check_any(commands.is_owner(), commands.has_permissions(administrator = True))
     async def _load(self, ctx, *, module: str):
@@ -40,6 +44,8 @@ class Development(commands.Cog):
         else:
             await ctx.send("Loaded: " + module)
 
+    # !unload <cogname>
+    # Unloads an active cog
     @commands.command(name = 'unload', description = "Unload specificed Cog.")
     @commands.check_any(commands.is_owner(), commands.has_permissions(administrator = True))
     async def _unload(self, ctx, *, module: str):
@@ -52,6 +58,8 @@ class Development(commands.Cog):
         else:
             await ctx.send("Unloaded: " + module)
 
+    # !reload <cogname>
+    # Reloads an active cog
     @commands.command(name = 'reload', description = "Reload specificed Cog.")
     @commands.check_any(commands.is_owner(), commands.has_permissions(administrator = True))
     async def _reload(self, ctx, *, module: str):
