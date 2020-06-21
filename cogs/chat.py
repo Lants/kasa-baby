@@ -42,7 +42,7 @@ class Chat(commands.Cog):
     # Out: N/A
     @commands.command(name = "eatAdmin", description = eatAdminDesc)
     @commands.check_any(commands.has_permissions(administrator = True), commands.is_owner())
-    async def eatAdmin(self, ctx, *, args: str):
+    async def eatAdmin(self, ctx, n, *, args: str):
         n = int(n) + 1
         if n > 151:
             n = 151
@@ -58,7 +58,7 @@ class Chat(commands.Cog):
                     if targetUser.id == m.author.id:
                         await m.delete()
                         
-        await ctx.send("I ate " + str(n) + " messages!", delete_after = 10)
+        await ctx.send("I ate " + str(n - 1) + " messages!", delete_after = 10)
         
     #--------------------------------------COMMAND ERRORS-------------------------------------
     
