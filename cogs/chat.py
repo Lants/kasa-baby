@@ -1,3 +1,4 @@
+import random
 import discord
 from discord.ext import commands
 
@@ -60,6 +61,19 @@ class Chat(commands.Cog):
                         
         await ctx.send("I ate " + str(n - 1) + " messages!", delete_after = 10)
         
+
+    # !roll <n>
+    # Random roll up to given number (inclusive)
+    # In: self, ctx, n
+    # Out: N/A
+    @commands.command(name = "roll", description = "Random roll up to given number (inclusive). Usage: !roll <n>")
+    async def roll(self, ctx, n):
+        n = int(n)
+        if n == 0:
+            await ctx.send("If you have 0 friends, and try to choose a random friend, that doesn't change the fact that you still have 0 friends.")
+        else:
+            await ctx.send(random.randrange(n) + 1)
+
     #--------------------------------------COMMAND ERRORS-------------------------------------
     
     @eat.error
@@ -68,7 +82,11 @@ class Chat(commands.Cog):
     
     @eatAdmin.error
     async def eatAdmin_error(self, ctx, error):
-        await ctx.send("\"uh oh.. something went wrong!\"\nType <!help eatAdmin> for proper usage.")
+        await ctx.send("\"uh oh.. something went wrong!\"\nType <!help eatAdmin> for proper usage.\n")
+
+    @roll.error
+    async def roll_error(self, ctx, error):
+        await ctx.send("Usage: !roll <n>\n(Without the <>, and n is a positive integer)")
 
 def setup(bot):
     bot.add_cog(Chat(bot))

@@ -17,7 +17,8 @@ bot = commands.Bot(command_prefix = '!', description = description, case_insensi
 # but all of its features are coded with cogs.
 cogs = ['cogs.development',
         'cogs.chat',
-        'cogs.hangman']
+        'cogs.hangman',
+        'cogs.ONUW']
 
 
 
