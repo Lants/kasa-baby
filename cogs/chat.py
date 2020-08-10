@@ -1,4 +1,4 @@
-import random
+import random, asyncio
 import discord
 from discord.ext import commands
 
@@ -73,6 +73,14 @@ class Chat(commands.Cog):
             await ctx.send("If you have 0 friends, and try to choose a random friend, that doesn't change the fact that you still have 0 friends.")
         else:
             await ctx.send(random.randrange(n) + 1)
+
+
+    # !emoji
+    # Prints ID of emoji sent
+    @commands.command(name = "emoji", description = "Prints ID of given emoji")
+    async def emoji(self, ctx):
+        await asyncio.sleep(5)
+        await ctx.send("```%s ```" % ctx.message.reactions)
 
     #--------------------------------------COMMAND ERRORS-------------------------------------
     
