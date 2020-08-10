@@ -29,7 +29,7 @@ async def on_ready():
     for cog in cogs:
         bot.load_extension(cog)
     return
-    
+
 #---------------------------------------DEVELOPMENT TOOLS---------------------------------------------
 
 ################## THIS HAS BEEN MOVED TO "development.py" ###########################
