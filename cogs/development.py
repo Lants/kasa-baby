@@ -2,6 +2,7 @@
 
 from discord.ext import commands
 import random
+import discord
 
 class Development(commands.Cog):
     
@@ -19,7 +20,7 @@ class Development(commands.Cog):
             await ctx.channel.send("nighty night! I go sleep now " + str(ctx.author.mention))
         else:
             await ctx.channel.send("aw, it's not my bedtime yet " + str(ctx.author.mention) + "! fine.. goodnight!")
-        await ctx.bot.logout()
+        await ctx.bot.close()
 
     # !echo <string>   
     # Echo back input. Used for testing.
@@ -71,6 +72,13 @@ class Development(commands.Cog):
             await ctx.send("Could not reload extension. Uhhh ask Lance for help lmao")
         else:
             await ctx.send("Reloaded: " + module)
+
+    # !channelType
+    # Prints type of channel that the command is used from
+    @commands.command(name = 'channelType', description = 'Prints type of channel that the command is used from')
+    async def channelType(self, ctx):
+        # await ctx.send(isinstance(ctx.channel, discord.channel.DMChannel))
+        await ctx.send(ctx.channel.type)
 
     #-------------------------------------------COMMAND ERROR HANDLING-----------------------------------------------    
     @echo.error

@@ -34,7 +34,7 @@ class Chat(commands.Cog):
     1) [!eatAdmin <n> all] <-- deletes n messages from channel.
     2) [!eatAdmin <n> @user1 @user2 @user3...] <-- CHECKS n messages in channel history, deletes them if a matching user wrote it.
     
-    Lance has arbitrarily set 150 messages back as the maximum. If you want this larger, ask him!"""    
+    Lance has arbitrarily set 100 messages back as the maximum. If you want this larger, ask him!"""    
         
     # !eatAdmin <n> <all | @user1 @user2...>
     # Admin version of eat command. Allows targetting users and purging all
@@ -45,21 +45,23 @@ class Chat(commands.Cog):
     @commands.check_any(commands.has_permissions(administrator = True), commands.is_owner())
     async def eatAdmin(self, ctx, n, *, args: str):
         n = int(n) + 1
-        if n > 151:
-            n = 151
+        if n > 100:
+            n = 100
         mentionList = ctx.message.mentions
         argsList = args.rstrip().lstrip().lower().split()
 
         if argsList[0] == 'all' and len(argsList) == 1:
-            async for m in ctx.channel.history(limit = n):
-                await m.delete()
+            msgs = []
+            async for msg in ctx.channel.history(limit = n):
+                msgs.append(msg)
+            await ctx.channel.delete_messages(msgs)
         else: # For every message within
             async for m in ctx.channel.history(limit = n):
                 for targetUser in mentionList:
                     if targetUser.id == m.author.id:
                         await m.delete()
                         
-        await ctx.send("I ate " + str(n - 1) + " messages!", delete_after = 10)
+        await ctx.send("I ate " + str(n) + " messages!", delete_after = 10)
         
 
     # !roll <n>
@@ -88,9 +90,9 @@ class Chat(commands.Cog):
     async def eat_error(self, ctx, error):
         await ctx.send("\"wha?\"\nType <!help eat> for proper usage", delete_after = 10)
     
-    @eatAdmin.error
-    async def eatAdmin_error(self, ctx, error):
-        await ctx.send("\"uh oh.. something went wrong!\"\nType <!help eatAdmin> for proper usage.\n")
+    # @eatAdmin.error
+    # async def eatAdmin_error(self, ctx, error):
+    #     await ctx.send("\"uh oh.. something went wrong!\"\nType <!help eatAdmin> for proper usage.\n")
 
     @roll.error
     async def roll_error(self, ctx, error):

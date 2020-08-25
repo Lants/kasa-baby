@@ -1,12 +1,15 @@
 import discord
 from discord.ext import commands
 import json
+import logging
 import checks
 
 with open('config.JSON') as config_file:
     config = json.load(config_file)
 
 lance = 187028470998499340
+
+logging.basicConfig(level=logging.INFO)
 
 description = '''Discord bot for KASA server. Imitates a baby. googoo gaga, bich\nUse !help <command> for instructions!'''
 
