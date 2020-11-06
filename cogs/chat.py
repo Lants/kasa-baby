@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 from googletrans import Translator
 import requests
+from jservicepy import jService
 
 # Cog for chat features
 
@@ -10,6 +11,7 @@ class Chat(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.translator = Translator()
+        self.jService = jService()
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
@@ -143,6 +145,25 @@ class Chat(commands.Cog):
     async def dadjoke(self, ctx):
         """Retrieves a random dad joke from icanhazdadjoke.com"""
         await ctx.send(requests.get("https://icanhazdadjoke.com", headers={"Accept":"text/plain", "User-Agent":"Dummy Bot [Discord bot, personal project] (https://github.com/Lants/kasa-baby)"}).text)
+
+
+    # !quiz
+    # jeopardy??
+    def isMessage(self, reaction, user):
+        return reaction.message.author.id == user.id
+    @commands.command(name = "quiz")
+    async def quiz(self, ctx):
+        """Uses jservice.io to fetch a jeopardy question. React to YOUR OWN message with any emoji to reveal answer"""
+        q = self.jService.random()
+        await asyncio.sleep(0.1)
+        await ctx.send("%s for %d points: \"%s\"" % (q[0].category.title, q[0].value, q[0].question))
+        try:
+            reac = await self.bot.wait_for("reaction_add", timeout = 60, check = self.isMessage)
+        except:
+            pass
+        finally:
+            await ctx.send("Answer requested by %s: \"%s\"" % (reac[1].name, q[0].answer))
+
     #--------------------------------------COMMAND ERRORS-------------------------------------
     
     @eat.error
