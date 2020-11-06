@@ -1,13 +1,31 @@
 import random, asyncio
 import discord
 from discord.ext import commands
+from googletrans import Translator
+import requests
 
 # Cog for chat features
 
 class Chat(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.translator = Translator()
 
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction, user):
+        if reaction.emoji == "🇬🇧":
+            await self.translateToEnglish(reaction, user)
+
+    async def translateToEnglish(self, reaction, user):
+        print(reaction.message.content)
+        translated = self.translator.translate(reaction.message.content).text
+        detected = self.translator.detect(reaction.message.content)
+        print(detected.lang)
+        if (reaction.count == 1 and not (detected.lang == "en") or user.id == self.bot.owner_id):
+            chan = reaction.message.channel
+            string = ("Translating %s's message from %s: %s") % (reaction.message.author.name, detected.lang.upper(), translated)
+            await chan.send(string)
+        
 
     #-------------------------------------COMMANDS-------------------------------------------
     
@@ -15,6 +33,7 @@ class Chat(commands.Cog):
     # Purge user's messages (bulk delete)
     @commands.command(name = "eat", description = "\"Feed me your yummy messages!\"\nDeletes a set number of your messages. Limit 7 per use. Only checks the last 30 messages.\nUsage: !eat <number of messages>")
     async def eat(self, ctx, n):
+        """Deletes your own messages."""
         n = int(n) + 1
         if n > 8:
             n = 8
@@ -44,6 +63,7 @@ class Chat(commands.Cog):
     @commands.command(name = "eatAdmin", description = eatAdminDesc)
     @commands.check_any(commands.has_permissions(administrator = True), commands.is_owner())
     async def eatAdmin(self, ctx, n, *, args: str):
+        """!Eat, but with more power for admins."""
         n = int(n) + 1
         if n > 100:
             n = 100
@@ -70,6 +90,7 @@ class Chat(commands.Cog):
     # Out: N/A
     @commands.command(name = "roll", description = "Random roll up to given number (inclusive). Usage: !roll <n>")
     async def roll(self, ctx, n):
+        """Rolls a dice! Except the dice has infinite(?) sides..."""
         n = int(n)
         if n == 0:
             await ctx.send("If you have 0 friends, and try to choose a random friend, that doesn't change the fact that you still have 0 friends.")
@@ -77,13 +98,51 @@ class Chat(commands.Cog):
             await ctx.send(random.randrange(n) + 1)
 
 
+    # !xroll <x> <n>
+    # Random roll, but x amount of times
+    @commands.command(name = "xroll")
+    async def xroll(self, ctx, x, n):
+        """Same as roll, but does it 'x' amount of times."""
+        x = int(x)
+        n = int(n)
+        if n == 0 or x == 0:
+            await ctx.send("If you have 0 friends, and try to choose a random friend, that doesn't change the fact that you still have 0 friends.")
+        else:
+            out = ""
+            while x > 0:
+                x -= 1
+                out = out + " " + str(random.randrange(n) + 1)
+            await ctx.send(out)
+
+
+
     # !emoji
     # Prints ID of emoji sent
     @commands.command(name = "emoji", description = "Prints ID of given emoji")
     async def emoji(self, ctx):
+        """Prints emojis for pasting into VSCode."""
         await asyncio.sleep(5)
         await ctx.send("```%s ```" % ctx.message.reactions)
 
+
+    # !shittyinsult
+    # Random Insult
+    @commands.command(name = "shittyInsult")
+    async def shittyinsult(self, ctx):
+        """Generates a terrible insult"""
+        # if len(args) == 0:
+        #     url = "https://evilinsult.com/generate_insult.php?lang=%s" % args.rstrip().lstrip().split()[0].lower()
+        # else:
+        url = "https://evilinsult.com/generate_insult.php?lang=en&type=json"
+        response = requests.get(url).json()['insult']
+        print(response)
+        await ctx.send(response)
+
+    #!dadjoke
+    @commands.command(name = "dadJoke")
+    async def dadjoke(self, ctx):
+        """Retrieves a random dad joke from icanhazdadjoke.com"""
+        await ctx.send(requests.get("https://icanhazdadjoke.com", headers={"Accept":"text/plain", "User-Agent":"Dummy Bot [Discord bot, personal project] (https://github.com/Lants/kasa-baby)"}).text)
     #--------------------------------------COMMAND ERRORS-------------------------------------
     
     @eat.error
@@ -97,6 +156,10 @@ class Chat(commands.Cog):
     @roll.error
     async def roll_error(self, ctx, error):
         await ctx.send("Usage: !roll <n>\n(Without the <>, and n is a positive integer)")
+
+    @xroll.error
+    async def xroll_error(self, ctx, error):
+        await ctx.send("Usage: !xroll <x> <n> (Where x and n are both positive integers)")
 
 def setup(bot):
     bot.add_cog(Chat(bot))

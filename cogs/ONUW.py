@@ -113,7 +113,7 @@ class Onuw(commands.Cog):
             elif n == 5:
                 self.__roleList =  [1, 2, 3, 4, 5, 7, 10, 0]
             elif n == 6:
-                self.__roleList = [1, 2, 3, 4, 5, 7, 9, 10, 9]
+                self.__roleList = [1, 6, 3, 4, 5, 7, 9, 10, 9] # Replaced minion with tanner
             elif n == 7:
                 self.__roleList = [1, 2, 3, 4, 5, 7, 8, 10, 0, 0]
             elif n == 8:
@@ -523,6 +523,7 @@ class Onuw(commands.Cog):
     @commands.command(name = "ONUW", description = "Play One Night Ultimate Werewolf!\nUsage: !ONUW <n> <user1> <user2> <user3>...\nwhere n is the number of players and <user#> is a player")
     @commands.check_any(commands.has_permissions(administrator = True), commands.is_owner())
     async def onuw(self, ctx, *args):
+        """Play One Night Ultimate Werewolf!"""
         await ctx.send("Welcome to One Night Ultimate Werewolf! It may take a second to set up, but please make your way over to the 'onuw-narrator' channel :)")
 
         mentionList = ctx.message.mentions

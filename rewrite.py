@@ -11,7 +11,7 @@ lance = 187028470998499340
 
 logging.basicConfig(level=logging.INFO)
 
-description = '''Discord bot for KASA server. Imitates a baby. googoo gaga, bich\nUse !help <command> for instructions!'''
+description = '''Discord bot by Lance. Psuedo-baby style??\nUse !help <command> for instructions!'''
 
 bot = commands.Bot(command_prefix = '!', description = description, case_insensitive = True, owner_id = lance)
 
@@ -20,7 +20,7 @@ bot = commands.Bot(command_prefix = '!', description = description, case_insensi
 # but all of its features are coded with cogs.
 cogs = ['cogs.development',
         'cogs.chat',
-        'cogs.hangman',
+        # 'cogs.hangman',
         'cogs.ONUW']
 
 
@@ -29,6 +29,7 @@ cogs = ['cogs.development',
 @bot.event
 async def on_ready():
     print('Logged in as ' + bot.user.name)
+    # bot.remove_command('help')
     for cog in cogs:
         bot.load_extension(cog)
     return
